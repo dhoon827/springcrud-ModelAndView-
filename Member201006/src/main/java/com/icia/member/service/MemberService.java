@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -100,6 +101,34 @@ public class MemberService {
 		}else {
 			mav.setViewName("MemberUpdateFail");
 		}
+		return mav;
+	}
+	
+	//아이디 중복확인(ajax)
+	public String idOverlap(String mid) {
+		String checkResult = memberDAO.idOverlap(mid);
+		String resultMsg = null;
+		if(checkResult == null)
+			resultMsg = "OK";
+		else
+			resultMsg = "NO";
+		return resultMsg;
+	}
+
+	//ajax 이용한 상세조회
+	public MemberDTO memberViewAjax(String mid) {
+		MemberDTO memberView = memberDAO.memberView(mid);
+		return memberView;
+	}
+	
+	//카카오 로그인
+	public ModelAndView kakaoLogin(JsonNode profile) {
+		mav = new ModelAndView();
+		String kakaoId = profile.get("id").asText();
+		String loginId = memberDAO.kakaoLogin(kakaoId);
+		
+		session.setAttribute("loginId", loginId);
+		mav.setViewName("main");
 		return mav;
 	}
 	

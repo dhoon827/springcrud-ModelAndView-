@@ -16,6 +16,11 @@
 		<input type="submit" value="로그인">
 		
 		<input type="button" onclick="location.href='memberjoinform'" value="회원가입">
+		
+		<h3>카카오 로그인</h3>
+		<a href="kakaologin">
+			<img src="${pageContext.request.contextPath}/resources/img/kakao_login_medium_narrow.png">
+		</a>
 </form>
 </body>
 </html>

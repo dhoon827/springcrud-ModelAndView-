@@ -8,6 +8,18 @@
 			(#{mid},#{mpassword},#{mname},#{mphone},#{memail},#{mbirth})	
 	</insert>	
 	
+	<!-- 카카오 아이디 -->
+	<insert id="kakaoMemberJoin" parameterType="member">
+		INSERT INTO MEMBER(MID,MPASSWORD,MNAME,MPHONE,MEMAIL,MBIRTH,KAKAOID) VALUES
+			(#{mid},#{mpassword},#{mname},#{mphone},#{memail},#{mbirth},#{kakaoId})	
+	</insert>	
+	
+	<!-- 네이버 아이디 -->
+	<insert id="naverMemberJoin" parameterType="member">
+		INSERT INTO MEMBER(MID,MPASSWORD,MNAME,MPHONE,MEMAIL,MBIRTH,NAVERID) VALUES
+			(#{mid},#{mpassword},#{mname},#{mphone},#{memail},#{mbirth},#{naverId})	
+	</insert>	
+	
 	<select id="memberLogin" parameterType="member" resultType="String">
 		SELECT MID FROM MEMBER WHERE MID=#{mid} AND MPASSWORD=#{mpassword}
 	</select>
@@ -33,6 +45,16 @@
 	<update id="memberUpdateProcess" parameterType="member">
 		UPDATE MEMBER SET MPASSWORD=#{mpassword}, MNAME=#{mname}, MPHONE=#{mphone}, MEMAIL=#{memail}, MBIRTH=#{mbirth} WHERE MID=#{mid}
 	</update>
+	
+	<!-- 아이디 중복확인(ajax) -->
+	<select id="idOverlap" parameterType="String" resultType="String">
+		SELECT * FROM MEMBER WHERE MID=#{mid}
+	</select>
+	
+	<!-- 카카오로그인 -->
+	<select id="kakaoLogin" parameterType="String" resultType="String">
+		SELECT MID FROM MEMBER WHERE KAKAOID=#{kakaoId}
+	</select>
  </mapper>
  
  

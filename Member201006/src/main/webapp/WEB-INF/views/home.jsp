@@ -11,5 +11,11 @@
 
 	<button onclick="location.href='memberloginform'">로그인</button>
 	<button onclick="location.href='memberjoinform'">회원가입</button>
+	
+	<h3>카카오 회원가입</h3>
+	<a href="kakaojoin">
+		<img src="${pageContext.request.contextPath}/resources/img/kakao_login_medium_narrow.png">
+	</a>
+
 </body>
 </html>

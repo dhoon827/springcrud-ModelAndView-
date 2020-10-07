@@ -16,7 +16,12 @@ public class MemberDAO {
 	
 	//회원가입
 	public int memberJoin(MemberDTO member) {
-		return sql.insert("Member.memberJoin", member);
+		if(member.getKakaoId() != null)
+			return sql.insert("Member.kakaoMemberJoin", member);
+		else if(member.getNaverId() != null)
+			return sql.insert("Member.naverMemberJoin", member);
+		else
+			return sql.insert("Member.memberJoin", member);
 	}
 	
 	//로그인
@@ -48,6 +53,16 @@ public class MemberDAO {
 	//정보수정
 	public int memberUpdateProcess(MemberDTO member) {
 		return sql.update("Member.memberUpdateProcess", member);
+	}
+
+	//아이디 중복확인(ajax)
+	public String idOverlap(String mid) {
+		return sql.selectOne("Member.idOverlap", mid);
+	}
+
+	//카카오 로그인
+	public String kakaoLogin(String kakaoId) {
+		return sql.selectOne("Member.kakaoLogin", kakaoId);
 	}
 
 }
