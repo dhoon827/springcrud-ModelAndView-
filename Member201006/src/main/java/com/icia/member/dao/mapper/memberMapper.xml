@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="Member"> 
+	<insert id="memberJoin" parameterType="member">
+		INSERT INTO MEMBER(MID,MPASSWORD,MNAME,MPHONE,MEMAIL,MBIRTH) VALUES
+			(#{mid},#{mpassword},#{mname},#{mphone},#{memail},#{mbirth})	
+	</insert>	
+	
+	<select id="memberLogin" parameterType="member" resultType="String">
+		SELECT MID FROM MEMBER WHERE MID=#{mid} AND MPASSWORD=#{mpassword}
+	</select>
+	
+	<select id="memberList" resultType="member">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="memberView" parameterType="String" resultType="member">  <!-- 파라미터는 mid result는 한명을 대상으로 전체를 받아오는거라 member -->
+		SELECT * FROM MEMBER WHERE MID=#{mid}
+	</select>
+	
+	<delete id="memberDelete" parameterType="String">
+		DELETE FROM MEMBER WHERE MID=#{mid}
+	</delete>
+	
+	<!-- 정보수정 불러오기 -->
+	<select id="memberUpdate" parameterType="String" resultType="member">
+		SELECT * FROM MEMBER WHERE MID=#{mid}
+	</select>
+	
+	<!-- 정보수정 -->
+	<update id="memberUpdateProcess" parameterType="member">
+		UPDATE MEMBER SET MPASSWORD=#{mpassword}, MNAME=#{mname}, MPHONE=#{mphone}, MEMAIL=#{memail}, MBIRTH=#{mbirth} WHERE MID=#{mid}
+	</update>
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
