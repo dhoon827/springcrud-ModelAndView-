@@ -55,6 +55,11 @@
 	<select id="kakaoLogin" parameterType="String" resultType="String">
 		SELECT MID FROM MEMBER WHERE KAKAOID=#{kakaoId}
 	</select>
+	
+	<!-- 네이버로그인 -->
+	<select id="naverLogin" parameterType="String" resultType="String">
+		SELECT MID FROM MEMBER WHERE NAVERID=#{naverId}
+	</select>
  </mapper>
  
  

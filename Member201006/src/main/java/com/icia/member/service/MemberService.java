@@ -5,6 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonNode;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -127,6 +130,19 @@ public class MemberService {
 		String kakaoId = profile.get("id").asText();
 		String loginId = memberDAO.kakaoLogin(kakaoId);
 		
+		session.setAttribute("loginId", loginId);
+		mav.setViewName("main");
+		return mav;
+	}
+	//네이버 로그인
+	public ModelAndView naverLogin(String profile) throws ParseException {
+		mav = new ModelAndView();
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(profile);
+		JSONObject naverUser = (JSONObject)obj;
+		JSONObject userInfo = (JSONObject)naverUser.get("response");
+		String naverId = (String)userInfo.get("id");
+		String loginId = memberDAO.naverLogin(naverId);
 		session.setAttribute("loginId", loginId);
 		mav.setViewName("main");
 		return mav;

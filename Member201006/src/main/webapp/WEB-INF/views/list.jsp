@@ -8,6 +8,21 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
+	function ajaxdelete(mid){
+		console.log("delete mid : "+mid)
+		$.ajax({
+			type : "post",
+			url : "ajaxdelete",
+			data : {"mid" : mid},
+			dataType : text,
+			success : function(result){
+				alert
+			}
+			error : function(){
+				alert("ajax 실패!!");
+			}
+		});
+	}
 	function memberViewAjax(mid){
 		console.log(mid);
 		$.ajax({
@@ -47,7 +62,7 @@
 	<tr>
 		<th>아이디</th> <th>비밀번호</th> <th>이름</th>
 		<th>전화번호</th> <th>이메일</th> <th>생년월일</th>
-		<th>상세조회</th> <th>상세조회(ajax)</th><th>삭제</th></tr>
+		<th>상세조회</th> <th>상세조회(ajax)</th><th>삭제</th><th>삭제(ajax)</th></tr>
 	<c:forEach var="member" items="${memberList}">
 		<tr>
 			<td>${member.mid}</td>
@@ -59,6 +74,7 @@
 			<td><a href="memberview?mid=${member.mid}">조회</a></td>
 			<td><button onclick="memberViewAjax('${member.mid}')">조회(ajax)</button></td>
 			<td><a href="memberdelete?mid=${member.mid}">삭제</a></td>
+			<td><a href="ajaxdelete('${member.mid})">삭제(ajax)</a></td>
 			
 	</c:forEach>
 	</table>

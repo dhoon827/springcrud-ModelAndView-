@@ -31,4 +31,7 @@
 		<beans:property name="maxInMemorySize" value="10000000" /><!--	10MB -->
 	</beans:bean>	
 	
+	<!-- Naver API 빈으로 등록 -->
+	<beans:bean id="naverJoinApi" class="com.icia.member.api.NaverJoinApi"></beans:bean>
+	<beans:bean id="naverLogininApi" class="com.icia.member.api.NaverLoginApi"></beans:bean>
 </beans:beans>

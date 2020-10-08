@@ -1,8 +1,13 @@
 package com.icia.member.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonNode;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.icia.member.api.KakaoJoinApi;
 import com.icia.member.api.KakaoLoginApi;
+import com.icia.member.api.NaverJoinApi;
+import com.icia.member.api.NaverLoginApi;
 import com.icia.member.dto.MemberDTO;
 import com.icia.member.service.MemberService;
 
@@ -31,6 +39,12 @@ public class MemberController {
 	
 	@Autowired
 	private KakaoLoginApi kakaoLoginApi;
+	
+	@Autowired
+	private NaverJoinApi naverJoinApi;
+	
+	@Autowired
+	private NaverLoginApi naverLoginApi;
 	
 	@RequestMapping(value="/")
 	public String home() {
@@ -105,6 +119,7 @@ public class MemberController {
 	@RequestMapping(value="/idoverlap")
 	public @ResponseBody String idOverLap(@RequestParam("mid") String mid) {
 		String resultMsg = memberService.idOverlap(mid);
+		System.out.println(resultMsg);
 		return resultMsg;
 	}
 	
@@ -114,6 +129,13 @@ public class MemberController {
 		System.out.println("전달받은 값 : "+mid);
 		MemberDTO memberView = memberService.memberViewAjax(mid);
 		return memberView;
+	}
+
+	//ajax 삭제
+	@RequestMapping(value="/ajaxdelete")
+	public @ResponseBody String ajaxDelete(@RequestParam("mid") String mid) {
+		
+		return null;
 	}
 	
 	//로그아웃
@@ -166,4 +188,50 @@ public class MemberController {
 		mav = memberService.kakaoLogin(profile);
 		return mav;
 	}
+	
+	//네이버 회원가입 1
+	@RequestMapping(value="/naverjoin")
+	public ModelAndView naverJoin(HttpSession session) {
+		String naverUrl = naverJoinApi.getAuthorizationUrl(session);
+		mav = new ModelAndView();
+		mav.addObject("naverUrl",naverUrl);	
+		mav.setViewName("NaverLogin");
+		return mav;
+	}
+	
+	//네이버 회원가입 2
+	@RequestMapping(value="/naverjoinok")
+	public ModelAndView naverJoinOk(@RequestParam("code") String code, @RequestParam("state") String state, HttpSession session) throws IOException, ParseException {
+		mav = new ModelAndView();
+		OAuth2AccessToken oauthToken = naverJoinApi.getAccessToken(session, code, state);
+		String profile = naverJoinApi.getUserProfile(oauthToken);
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(profile);
+		JSONObject naverUser = (JSONObject)obj;
+		JSONObject userInfo = (JSONObject)naverUser.get("response");
+		String naverId = (String) userInfo.get("id");
+		mav.addObject("naverId",naverId);	
+		mav.setViewName("join");
+		return mav;
+	}
+	
+	//네이버 로그인 1
+	@RequestMapping(value="/naverlogin")
+	public ModelAndView naverLogin(HttpSession session) {			String naverUrl = naverLoginApi.getAuthorizationUrl(session);
+		mav = new ModelAndView();
+		mav.addObject("naverUrl",naverUrl);	
+		mav.setViewName("NaverLogin");			
+		return mav;
+	}
+	
+	//네이버 로그인 2
+	@RequestMapping(value="/naverloginok")
+	public ModelAndView naverLoginOk(@RequestParam("code") String code, @RequestParam("state") String state, HttpSession session) throws IOException, ParseException {
+		mav = new ModelAndView();
+		OAuth2AccessToken oauthToken = naverLoginApi.getAccessToken(session, code, state);
+		String profile = naverLoginApi.getUserProfile(oauthToken);
+		mav = memberService.naverLogin(profile);
+		return mav;
+		}	
+	
 }

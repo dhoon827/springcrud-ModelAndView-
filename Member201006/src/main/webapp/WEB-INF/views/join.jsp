@@ -45,10 +45,19 @@
 <body>
 <h1>SIGN UP</h1>
 <form action="memberjoin" method="post">
+카카오 아이디 : ${kakaoId}
+네이버 아이디 : ${naverId}
+<br>
+
 		<c:choose>
 			<c:when test="${kakaoId ne null}">
 				아이디<br> <input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요" maxlength="20" size="50px" onkeyup="idOverlap()">
 				<input type="hidden" name="kakaoId" value="${kakaoId}"><br>
+				<span id="idch"></span>
+			</c:when>
+			<c:when test="${naverId ne null}">
+				아이디<br> <input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요" maxlength="20" size="50px" onkeyup="idOverlap()">
+				<input type="hidden" name="naverId" value="${naverId}"><br>
 				<span id="idch"></span>
 			</c:when>
 			<c:otherwise>

@@ -15,7 +15,10 @@
 	<h3>카카오 회원가입</h3>
 	<a href="kakaojoin">
 		<img src="${pageContext.request.contextPath}/resources/img/kakao_login_medium_narrow.png">
-	</a>
-
+	</a><br>
+	<h3>네이버 회원가입</h3>
+	<a href="naverjoin">
+		<img src="${pageContext.request.contextPath}/resources/img/네이버 아이디로 로그인_완성형_Green.PNG" style="width: 183px; hight: 45px;">
+	</a><br>
 </body>
 </html>
